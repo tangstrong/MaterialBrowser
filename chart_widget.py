@@ -4,6 +4,7 @@ import matplotlib
 matplotlib.use('QtAgg')
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from PyQt6.QtWidgets import QSizePolicy
@@ -66,7 +67,7 @@ class ChartWidget(FigureCanvasQTAgg):
         x = df[self.x_key].dropna()
         y = df[self.y_key].dropna()
         idx = x.index.intersection(y.index)
-        x, y = x.loc[idx], y.loc[idx)
+        x, y = x.loc[idx], y.loc[idx]
         labels = df.loc[idx, "Grade"].astype(str)
 
         self.ax.clear()
@@ -126,8 +127,10 @@ class ChartWidget(FigureCanvasQTAgg):
                  ).dropna()
         nearest = dists.idxmin() if len(dists) else None
         if nearest is not None:
-            from PyQt6.QtCore import QApplication
-            QApplication.instance().highlight_material(nearest)
+            from PyQt6.QtWidgets import QApplication
+            win = QApplication.instance().property('_mainWindow')
+            if win:
+                win.highlight_material(nearest)
 
     def export_png(self, path):
         self.fig.savefig(path, dpi=300, bbox_inches='tight', facecolor=C['bg_panel'])

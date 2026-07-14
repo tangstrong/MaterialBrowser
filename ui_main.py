@@ -29,6 +29,7 @@ class MainWindow(QWidget):
         self.excel_path = excel_path
         self._build_ui()
         self._load_data()
+        QApplication.instance().setProperty('_mainWindow', self)
 
     # ── UI 建构 ──────────────────────────────────────────────────────────────────
     def _build_ui(self):
