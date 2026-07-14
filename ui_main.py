@@ -156,7 +156,7 @@ class MainWindow(QWidget):
         self.cb_x.currentIndexChanged.connect(self._on_axis_changed)
         bar.addWidget(self.cb_x)
 
-        bar.addSpacing(10)
+        bar.addSeparator()
 
         # Y轴
         lbl_y = QLabel("Y 轴:")
@@ -169,7 +169,7 @@ class MainWindow(QWidget):
         self.cb_y.currentIndexChanged.connect(self._on_axis_changed)
         bar.addWidget(self.cb_y)
 
-        bar.addSpacing(10)
+        bar.addSeparator()
 
         # 导出
         btn_export = QPushButton("💾 导出图表 PNG")
