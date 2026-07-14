@@ -2,7 +2,9 @@
 """matplotlib 散点图组件"""
 import matplotlib
 matplotlib.use('QtAgg')
-import matplotlib.pyplot as plt
+
+# 不 import matplotlib.pyplot，避免触发 Windows 系统目录下的 matplotlibrc 编码问题
+# 直接操作 matplotlib.rcParams
 import numpy as np
 import pandas as pd
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
@@ -11,7 +13,7 @@ from PyQt6.QtWidgets import QSizePolicy
 from PyQt6.QtCore import Qt
 from styles import C, get_colors
 
-plt.rcParams.update({
+matplotlib.rcParams.update({
     'axes.facecolor':    C['bg_panel'],
     'figure.facecolor':  C['bg_panel'],
     'axes.edgecolor':    C['border_hi'],
@@ -99,12 +101,8 @@ class ChartWidget(FigureCanvasQTAgg):
                                        edgecolor=C['accent'], alpha=0.9),
                              zorder=10)
 
-        unit_x = next((a["unit"] for a in [{}] if False), "")
-        unit_y = ""
-        xlabel = f"{self.x_key} ({unit_x})" if unit_x else self.x_key
-        ylabel = f"{self.y_key} ({unit_y})" if unit_y else self.y_key
-        self.ax.set_xlabel(xlabel, fontsize=9)
-        self.ax.set_ylabel(ylabel, fontsize=9)
+        self.ax.set_xlabel(self.x_key, fontsize=9)
+        self.ax.set_ylabel(self.y_key, fontsize=9)
         self.ax.grid(True, alpha=0.3)
         self.ax.tick_params(labelsize=8)
         self.fig.tight_layout()
