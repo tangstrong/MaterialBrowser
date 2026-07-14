@@ -4,11 +4,10 @@ from PyInstaller.utils.hooks import collect_all
 
 block_cipher = None
 
-# 收集 PyQt6 数据
 datas, binaries, hiddenimports = collect_all('PyQt6')
 
 a = Analysis(
-    ['main.py'],
+    ['launcher.py'],
     pathex=[],
     binaries=binaries,
     datas=datas,
@@ -16,6 +15,7 @@ a = Analysis(
         'PyQt6.QtCore', 'PyQt6.QtGui', 'PyQt6.QtWidgets',
         'pandas', 'openpyxl', 'numpy', 'matplotlib',
         'matplotlib.backends.backend_qtagg',
+        'styles', 'data_manager', 'ui_main', 'chart_widget',
     ],
     hookspath=[],
     hooksconfig={},
@@ -26,9 +26,7 @@ a = Analysis(
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
 exe = EXE(
-    pyz,
-    a.scripts,
-    [],
+    pyz, a.scripts, [],
     exclude_binaries=True,
     name='MaterialBrowser',
     debug=False,
@@ -45,12 +43,7 @@ exe = EXE(
 )
 
 coll = COLLECT(
-    exe,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
+    exe, a.binaries, a.zipfiles, a.datas,
+    strip=False, upx=True, upx_exclude=[],
     name='MaterialBrowser',
 )
