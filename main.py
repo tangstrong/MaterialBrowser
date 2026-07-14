@@ -35,7 +35,6 @@ def main():
             break
 
     app = QApplication(sys.argv)
-    app.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
 
     # 深色主题
     from styles import GLOBAL_QSS

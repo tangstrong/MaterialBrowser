@@ -22,11 +22,9 @@ try:
     log("导入 PyQt6...")
     sys.stdout.flush()
     from PyQt6.QtWidgets import QApplication
-    from PyQt6.QtCore import Qt
     log("PyQt6 导入成功")
 
     app = QApplication(sys.argv)
-    app.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
     log("QApplication 创建成功")
 
     # 深色主题
