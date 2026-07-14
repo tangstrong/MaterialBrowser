@@ -1,0 +1,63 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build exe
+        run: |
+          pyinstaller MaterialBrowser.spec --noconfirm
+
+      - name: Create placeholder data dir
+        run: |
+          mkdir "$env:TEMP\MaterialBrowser_Data"
+          "@echo 材料数据文件拖放到这里" | Out-File -FilePath "$env:TEMP\MaterialBrowser_Data\README.txt" -Encoding utf8
+
+      - name: Write README
+        run: |
+          @'
+          # MaterialBrowser 使用说明
+
+          ## 首次使用
+          1. 双击 MaterialBrowser.exe 启动
+          2. 首次会提示加载 Excel 文件，选择你的材料数据 Excel
+          3. 数据自动存入本地 SQLite，之后启动直接可用
+
+          ## 主要功能
+          - 左侧筛选：按系列、特殊成分、MWB、特性标签筛选
+          - 数值筛选：Flow/VST/Izod/Modulus/PCR/GF 范围筛选
+          - 散点图：X/Y轴可切换，悬停显示详情，点击跳转
+          - 数据导入：支持拖入 Excel 文件，或点工具栏"导入 Excel"
+          - 导出图表：导出散点图为 PNG
+
+          ## Excel 格式要求
+          必填列: Grade（材料牌号）
+          可选数值列: Flow, VST, Izod, Modulus, PCR, GF, FR
+
+          ## 依赖
+          程序为绿色版，无需安装 Python 或任何依赖库
+          '@ | Out-File -FilePath dist\README.md -Encoding utf8
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MaterialBrowser-Windows-Exe
+          path: dist/
+          retention-days: 30
