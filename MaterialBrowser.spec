@@ -19,7 +19,6 @@ a = Analysis(
     ],
     hookspath=[],
     hooksconfig={},
-    win_private_assemblies=True,
     cipher=block_cipher,
     noarchive=False,
 )
